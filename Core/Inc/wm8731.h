@@ -47,7 +47,7 @@ void codecInit(void){
     i2c_write(data_write);
  
     data_write[0] = 0x0a;   //digital audio path
-    data_write[1] = 0x00;
+    data_write[1] = 0x02;
     i2c_write(data_write);
  
     data_write[0] = 0x08;   //analog audio config
@@ -60,7 +60,7 @@ void codecInit(void){
     if(SAMPLINGFREQ == 29)
         data_write[1] = 0x22;   //29khz sampling frequency    changed from a2 to 22
     if(SAMPLINGFREQ == 44)
-        data_write[1] = 0xa0;   //44.1khz sampling frequency. changed from a0 to 20
+        data_write[1] = 0x20;   //44.1khz sampling frequency. changed from a0 to 20
     if(SAMPLINGFREQ == 88)
         data_write[1] = 0xbc;   //88khz?
     i2c_write(data_write);

@@ -8,6 +8,10 @@ public:
         for(int i = 0; i < DELAYLEN; i++){
             buffer[i] = 0;
         }
+        fraclength = 0.0;
+        buffout = 0.0;
+        buffin = 0.0;
+        out = 0.0;
     };
     void setLength(float length);
     float process(float in, float fbin, float length);

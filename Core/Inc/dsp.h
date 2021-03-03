@@ -110,7 +110,7 @@ public:
     Delay() {
         index1 = 0;
         index2 = DELAYLEN*.99;
-        for(int i = 0; i <= DELAYLEN; i++){
+        for(int i = 0; i < DELAYLEN; i++){
             buffer[i] = 0;
         }
     };

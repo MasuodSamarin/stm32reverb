@@ -84,6 +84,8 @@ static void MX_I2C1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+int wait = 0;
+
 /* USER CODE END 0 */
 
 /**
@@ -122,7 +124,9 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
+  for(int i = 0; i < 1000000; i++);
   setup();
+  for(int i = 0; i < 1000000; i++);
   HAL_I2SEx_TransmitReceive_DMA(&hi2s2, txBuf, rxBuf, 4);
 
   /* USER CODE END 2 */
@@ -156,9 +160,9 @@ void HAL_I2SEx_TxRxHalfCpltCallback(I2S_HandleTypeDef *hi2s){
 // }
 // https://community.st.com/s/question/0D50X0000AAJFwVSQX/bug-hali2sextxrxcpltcallback-never-fire-in-dma-circular-mode
 void HAL_I2SEx_TxRxCpltCallback(I2S_HandleTypeDef *hi2s){
-  //process(rxBuf[2],rxBuf[3],txBuf[2],txBuf[3]);
-  //txBuf[2] = rxBuf[2];
-  //txBuf[3] = rxBuf[3];
+  //do_process(&rxBuf[2],&rxBuf[3],&txBuf[2],&txBuf[3]);
+  txBuf[2] = 0;
+  txBuf[3] = 0;
 }
 
 /**
@@ -205,7 +209,7 @@ void SystemClock_Config(void)
     Error_Handler();
   }
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_I2S_APB1|RCC_PERIPHCLK_CLK48;
-  PeriphClkInitStruct.PLLI2S.PLLI2SN = 200;
+  PeriphClkInitStruct.PLLI2S.PLLI2SN = 260;     //200
   PeriphClkInitStruct.PLLI2S.PLLI2SM = 4;
   PeriphClkInitStruct.PLLI2S.PLLI2SR = 2;
   PeriphClkInitStruct.PLLI2S.PLLI2SQ = 2;
@@ -322,7 +326,7 @@ static void MX_I2S2_Init(void)
   hi2s2.Init.Standard = I2S_STANDARD_MSB;
   hi2s2.Init.DataFormat = I2S_DATAFORMAT_16B;
   hi2s2.Init.MCLKOutput = I2S_MCLKOUTPUT_ENABLE;
-  hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_48K;               //was 96k
+  hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_48K;               //there's some oscillation with the setting of 44k here...
   hi2s2.Init.CPOL = I2S_CPOL_LOW;
   hi2s2.Init.ClockSource = I2S_CLOCK_PLL;
   hi2s2.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_ENABLE;
